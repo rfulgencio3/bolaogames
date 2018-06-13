@@ -20,11 +20,15 @@
     "coverage"
   ],
   "scripts": {
+    "build-css": "node-sass-chokidar --include-path ./src --include-path ./node_modules src/ -o src/",
+    "watch-css": "npm run build-css && node-sass-chokidar --include-path ./src --include-path ./node_modules src/ -o src/ --watch --recursive",
     "prebuild": "npm run check",
     "prestart": "npm run check",
     "check": "check-node-version --print --node 8 --npm 5 && check-dependencies",
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start-js": "react-scripts start",
+    "start": "npm-run-all -p watch-css start-js",
+    "build-js": "react-scripts build",
+    "build": "npm-run-all build-css build-js",
     "test": "react-scripts test --env=jsdom",
     "coverage": "npm rum test -- --coverage",
     "eject": "react-scripts eject",
@@ -36,8 +40,11 @@
     "pre-commit": "^1.2.2"
   },
   "dependencies": {
+    "bootstrap": "^4.1.1",
     "dotenv": "^6.0.0",
     "firebase": "^5.0.4",
+    "node-sass-chokidar": "^1.3.0",
+    "npm-run-all": "^4.1.3",
     "react": "^16.4.0",
     "react-dom": "^16.4.0",
     "react-router-dom": "^4.3.1",
