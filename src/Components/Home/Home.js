@@ -21,8 +21,7 @@ class HomePage extends Component {
 				let arrayGroups = [];
 				snapshot.forEach(groupSnap => {
 					groupSnap.then(aSnap => {
-						this.setState((prev) => ({
-							groups: prev.groups.concat(aSnap.val())}))
+						this.setState((prev) => ({groups: [...prev.groups,aSnap.val()]}))
 					});
 				});
 			})
@@ -46,7 +45,7 @@ class HomePage extends Component {
 const GroupList = ({ groups }) =>
 	<div>
 		{Object.keys(groups).map(key =>
-			<Link to={routes.GROUP} key={key}>
+			<Link to={`${routes.GROUP}/${groups[key].uid}`} key={key}>
 				<div key={key}>
 					<img src={groups[key].icon} />
 					<p>{groups[key].name}</p>

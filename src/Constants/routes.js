@@ -8,6 +8,7 @@ export const PASSWORD_FORGET = '/pw-forget';
 
 
 export const GROUP = '/group';
+export const GROUPID = '/group/:id';
 export const COMPETITION = '/bolao';
 export const GAME = '/game';
 export const RANKING = '/ranking'

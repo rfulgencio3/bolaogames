@@ -11,6 +11,7 @@ import SignUpPage from './SignUp';
 import SignInPage from './SignIn';
 import PasswordForgetPage from './PasswordForget';
 import AccountPage from './Account';
+import GroupPage from './GroupPage';
 import * as routes from '../Constants/routes';
 import withAuthentication from './withAuthentication';
 
@@ -26,7 +27,8 @@ const App = () => (
                     <Route exact path={routes.SIGN_UP} component={() => <SignUpPage />} />
                     <Route exact path={routes.SIGN_IN} component={() => <SignInPage />} />
                     <Route exact path={routes.PASSWORD_FORGET} component={() => <PasswordForgetPage />} />
-                    <Route exact path={routes.ACCOUNT} component={() => <AccountPage />} />
+				<Route exact path={routes.ACCOUNT} component={() => <AccountPage />} />
+				<Route path={routes.GROUPID} component={GroupPage} />
                 </main>
             <Footer></Footer>
         </div>
