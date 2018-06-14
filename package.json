@@ -29,7 +29,7 @@
     "start": "npm-run-all -p watch-css start-js",
     "build-js": "react-scripts build",
     "build": "npm-run-all build-css build-js",
-    "test": "react-scripts test --env=jsdom",
+    "test": "react-scripts test --env=jsdom --maxWorkers 2 --ci --forceExit",
     "coverage": "npm run test -- --coverage",
     "eject": "react-scripts eject",
     "deploy": "firebase deploy -m \"Pipeline ${CIRCLE_BUILD_NUM} Build ${CIRCLE_TAG}\" --non-interactive --token \"${FIREBASE_TOKEN}\""
@@ -41,6 +41,7 @@
   },
   "dependencies": {
     "bootstrap": "^4.1.1",
+    "codacy-coverage": "^3.0.0",
     "firebase": "^5.0.4",
     "node-sass-chokidar": "^1.3.0",
     "npm-run-all": "^4.1.3",
