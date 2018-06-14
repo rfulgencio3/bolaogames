@@ -1,6 +1,8 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import withAuthorization from './withAuthorization';
-import {db} from '../Firebase';
+import { db } from '../Firebase';
+import { Grid, Row, Col, FormGroup,ControlLabel,FormControl } from 'react-bootstrap';
 
 class CompetitionPage extends Component {
     constructor(props) {
@@ -28,40 +30,76 @@ class CompetitionPage extends Component {
     }
 
     render() {
-        const {competition, competitiongroups} = this.state;
+		const { competition, competitiongroups } = this.state;
+		const { match: { params } } = this.props;
         return (
-            <div>
-                <p>Competitions</p>
+			<Grid>
+				<Row className="show-grid">
+					<Col xs={8} md={8} sm={4}>
+						<h1>Copa 2018 - Deve vir do Banco</h1>
+					</Col>
+					<Col xs={4} md={4} sm={2}>
+						<Link to={`/ranking/${params.groupid}/${params.competitionid}`} key={params.competitionid}>
+							<div key={params.competitionid}>Ranking</div>
+						</Link>
+					</Col>
+				</Row>
                 {!!competitiongroups && <MatchList allMatches={competitiongroups} competition={competition}/>}
-            </div>
+			</Grid>
         );
     }
 }
 
 
 const MatchList = ({allMatches, competition}) =>
-    <div>
+	<Row>
         {Object.keys(allMatches).map(key =>
-            <div key={key}>
-                <h1>{key}</h1>
-                {Object.keys(allMatches[key]).map(groupkey =>
-                    <div key={groupkey}>
-                        <p>
-                            <img src={competition.participants[allMatches[key][groupkey].host].icon}
-                                 alt={allMatches[key][groupkey].host}/>
-							{allMatches[key][groupkey].host} {competition.participants[allMatches[key][groupkey].host].name}
-							{allMatches[key][groupkey].open ? <input /> : <label>{allMatches[key][groupkey].result.host}</label>}
-                            x
-                            {allMatches[key][groupkey].open ? <input /> : <label>{allMatches[key][groupkey].result.guest}</label>}
-							{allMatches[key][groupkey].guest} {competition.participants[allMatches[key][groupkey].guest].name}
-							{allMatches[key][groupkey].open ? <label>*</label> : <label>5 pts</label>}
-                        </p>
-                        <p>{allMatches[key][groupkey].date}</p>
-                    </div>
-                )}
-            </div>
+			<Col xs={6} md={6} sm={8} key={key}>
+				<h1>{key}</h1>
+				<Row>
+                	{Object.keys(allMatches[key]).map(groupkey =>
+						<Col xs={6} md={6} sm={8} key={groupkey}>
+							<FormGroup>
+								<Col componentClass={ControlLabel} xs={9}>
+									<img src={competition.participants[allMatches[key][groupkey].host].icon}
+										alt={allMatches[key][groupkey].host} />
+									{allMatches[key][groupkey].host} {competition.participants[allMatches[key][groupkey].host].name}
+								</Col>
+								{allMatches[key][groupkey].open ?
+									<Col xs={3}>
+										<FormControl type="number" />
+										<FormControl.Feedback />
+									</Col>
+									:
+									<Col xs={3} componentClass={ControlLabel}>
+										{allMatches[key][groupkey].result.host}
+									</Col>
+								}
+							</FormGroup>
+							<FormGroup>
+								<Col componentClass={ControlLabel} xs={9}>
+									<img src={competition.participants[allMatches[key][groupkey].guest].icon}
+										alt={allMatches[key][groupkey].guest} />
+									{allMatches[key][groupkey].guest} {competition.participants[allMatches[key][groupkey].guest].name}
+								</Col>
+								{allMatches[key][groupkey].open ?
+									<Col xs={3}>
+										<FormControl type="number" />
+										<FormControl.Feedback />
+									</Col>
+									:
+									<Col xs={3} componentClass={ControlLabel}>
+										{allMatches[key][groupkey].result.guest}
+									</Col>
+								}
+							</FormGroup>
+							<p>{allMatches[key][groupkey].date}</p>
+						</Col>
+					)}
+				</Row>
+			</Col>
         )}
-    </div>
+	</Row>
 
 const authCondition = (authUser) => !!authUser;
 

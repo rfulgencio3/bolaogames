@@ -74,4 +74,8 @@ export const onceGetMyCompetitions = (groupid) => {
 //Matches API
 
 export const onceGetMatches = (id) =>
-    db.ref(`matches/${id}`).once('value')
+	db.ref(`matches/${id}`).once('value')
+
+//Ranking API
+export const onceGetRanking = (groupid, competitionid) =>
+	db.ref(`ranking/${groupid}/${competitionid}`).once('value')
