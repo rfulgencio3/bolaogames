@@ -10,6 +10,24 @@ export const doCreateUser = (id, username, email) =>
 export const onceGetUsers = () =>
 	db.ref('users').once('value');
 
+export const onceAddUserToGroup = (userid, groupid) => {
+	return db.ref(`users/${userid}`).once('value')
+		.then(snapshot => {
+			var user = snapshot.val();
+			if (user.groups)
+				user.groups[groupid] = true;
+			else
+				user.groups = { [groupid]: true };
+
+			return db.ref(`users/${userid}`)
+				.set({
+					email: user.email,
+					groups: user.groups,
+					username: user.username
+				});
+		});
+}
+
 //Group API
 export const doCreateGroup = (name, description, icon, code) => {
     const groupsRef = db.ref('groups');
@@ -21,13 +39,13 @@ export const onceGetGrupos = () =>
 	db.ref('groups').once('value');
 
 export const onceFindGroupByCode = (code) => {
-    const allGroups = db.ref('groups').once('value');
-    return allGroups.then(groupSnapshot => {
-        const groups = groupSnapshot.val();
+	return db.ref('groups').once('value').then(groupSnapshot => {
+		const groups = groupSnapshot.val();
         var groupToFind = null;
-        groups.forEach(group => {
-            if (group.code === code) {
-                groupToFind = group;
+		Object.keys(groups).forEach(groupkey => {
+			if (groups[groupkey].code === code) {
+				groupToFind = groups[groupkey];
+				groupToFind.key = groupkey;
             }
         });
         return groupToFind;

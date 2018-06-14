@@ -83,19 +83,24 @@ const MatchList = ({allMatches, competition}) =>
 										alt={allMatches[key][groupkey].guest} />
 									{allMatches[key][groupkey].guest} {competition.participants[allMatches[key][groupkey].guest].name}
 								</Col>
-
-							</FormGroup>
-							<p>
 								{allMatches[key][groupkey].open ?
 									<Col xs={3}>
 										<FormControl type="number" />
 										<FormControl.Feedback />
-										<img src={saveBtn} alt="gravar palpite" />
 									</Col>
+									:
+									<Col xs={3} componentClass={ControlLabel}>
+										{allMatches[key][groupkey].result.guest}
+									</Col>
+								}
+							</FormGroup>
+							<div>
+								{allMatches[key][groupkey].open ?
+										<img src={saveBtn} alt="gravar palpite" />
 									: allMatches[key][groupkey].result.guest
 
 								}
-							</p>
+							</div>
 							<p>{allMatches[key][groupkey].date}</p>
 						</Col>
 					)}
