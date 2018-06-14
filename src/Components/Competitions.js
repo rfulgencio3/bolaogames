@@ -53,7 +53,8 @@ const MatchList = ({allMatches, competition}) =>
 							{allMatches[key][groupkey].open ? <input /> : <label>{allMatches[key][groupkey].result.host}</label>}
                             x
                             {allMatches[key][groupkey].open ? <input /> : <label>{allMatches[key][groupkey].result.guest}</label>}
-                            {allMatches[key][groupkey].guest} {competition.participants[allMatches[key][groupkey].guest].name}
+							{allMatches[key][groupkey].guest} {competition.participants[allMatches[key][groupkey].guest].name}
+							{allMatches[key][groupkey].open ? <label>*</label> : <label>5 pts</label>}
                         </p>
                         <p>{allMatches[key][groupkey].date}</p>
                     </div>
