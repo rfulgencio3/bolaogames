@@ -2,7 +2,8 @@ import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import * as routes from '../../Constants/routes';
 import withAuthorization from '../withAuthorization';
-import {db} from '../../Firebase';
+import { db } from '../../Firebase';
+import { Grid,Row,Col } from 'react-bootstrap';
 
 class HomePage extends Component {
 	constructor(props) {
@@ -29,29 +30,37 @@ class HomePage extends Component {
 	render() {
 		const { groups } = this.state;
 		return (
-			<div>
-				<h1>Grupos</h1>
-				<div>
-					<input />
-				</div>
-				<p>Seus Grupos</p>
+			<Grid>
+				<Row className="show-grid">
+					<Col xs={12} md={12}>
+						<h1>Grupos</h1>
+					</Col>
+				</Row>
+				<Row className="show-grid">
+					<Col xs={12} md={12}>
+						<input />
+					</Col>
+				</Row>
 				{!!groups && <GroupList groups={groups} />}
-			</div>
+
+			</Grid>
 		);
 	}
 }
 
 const GroupList = ({ groups }) =>
-	<div>
+	<Row>
 		{Object.keys(groups).map(key =>
-			<Link to={`${routes.GROUP}/${groups[key].uid}`} key={key}>
+			<Col xs={4} md={4} sm={2}>
+				<Link to={`${routes.GROUP}/${groups[key].uid}`} key={key}>
 				<div key={key}>
                     <img src={groups[key].icon} alt={groups[key].name}/>
 					<p>{groups[key].name}</p>
 				</div>
-			</Link>
+				</Link>
+			</Col>
 		)}
-	</div>
+	</Row>
 
 const authCondition = (authUser) => !!authUser;
 

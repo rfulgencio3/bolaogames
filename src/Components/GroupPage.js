@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import withAuthorization from './withAuthorization';
 import {db} from '../Firebase';
+import { Grid, Row, Col } from 'react-bootstrap';
 
 class GroupPage extends Component {
 	constructor(props) {
@@ -31,26 +32,32 @@ class GroupPage extends Component {
         const {competitions} = this.state;
         const {match: {params}} = this.props;
 		return (
-            <div>
-                <p>Competitions</p>
+			<Grid>
+				<Row className="show-grid">
+					<Col xs={12} md={12}>
+						<h1>Competitions</h1>
+					</Col>
+				</Row>
                 {!!competitions && <CompetitionList competitions={competitions} group={params.id}/>}
-            </div>
+			</Grid>
         );
     }
 }
 
 
 const CompetitionList = ({competitions, group}) =>
-    <div>
-        {Object.keys(competitions).map(key =>
+	<Row>
+		{Object.keys(competitions).map(key =>
+			<Col xs={4} md={4} sm={2}>
             <Link to={`/competition/${group}/${competitions[key].uid}`} key={key}>
                 <div key={key}>
                     <img src={competitions[key].icon} alt={competitions[key].name}/>
                     <p>{competitions[key].name}</p>
                 </div>
-            </Link>
+				</Link>
+			</Col>
         )}
-    </div>
+	</Row>
 
 const authCondition = (authUser) => !!authUser;
 
