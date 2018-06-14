@@ -59,55 +59,88 @@ const MatchList = ({allMatches, competition}) =>
 				<h1>{key}</h1>
 				<Row>
                 	{Object.keys(allMatches[key]).map(groupkey =>
-						<Col xs={6} md={6} sm={8} key={groupkey}>
-							<FormGroup>
-								<Col componentClass={ControlLabel} xs={9}>
-									<img src={competition.participants[allMatches[key][groupkey].host].icon}
-										alt={allMatches[key][groupkey].host} />
-									{allMatches[key][groupkey].host} {competition.participants[allMatches[key][groupkey].host].name}
-								</Col>
-								{allMatches[key][groupkey].open ?
-									<Col xs={3}>
-										<FormControl type="number" />
-										<FormControl.Feedback />
-									</Col>
-									:
-									<Col xs={3} componentClass={ControlLabel}>
-										{allMatches[key][groupkey].result.host}
-									</Col>
-								}
-							</FormGroup>
-							<FormGroup>
-								<Col componentClass={ControlLabel} xs={9}>
-									<img src={competition.participants[allMatches[key][groupkey].guest].icon}
-										alt={allMatches[key][groupkey].guest} />
-									{allMatches[key][groupkey].guest} {competition.participants[allMatches[key][groupkey].guest].name}
-								</Col>
-								{allMatches[key][groupkey].open ?
-									<Col xs={3}>
-										<FormControl type="number" />
-										<FormControl.Feedback />
-									</Col>
-									:
-									<Col xs={3} componentClass={ControlLabel}>
-										{allMatches[key][groupkey].result.guest}
-									</Col>
-								}
-							</FormGroup>
-							<div>
-								{allMatches[key][groupkey].open ?
-										<img src={saveBtn} alt="gravar palpite" />
-									: allMatches[key][groupkey].result.guest
-
-								}
-							</div>
-							<p>{allMatches[key][groupkey].date}</p>
-						</Col>
+						<SingleMatch competition={competition} match={allMatches[key][groupkey]} />
 					)}
 				</Row>
 			</Col>
         )}
 	</Row>
+
+class SingleMatch extends Component {
+	constructor(props) {
+		super(props);
+
+		this.bidGuest = this.bidGuest.bind(this);
+		this.bidHost = this.bidHost.bind(this);
+
+		this.state = {  }
+	}
+
+	bidHost(ev) {
+		console.log('Host', ev.target[0].value);
+		ev.preventDefault();
+	}
+
+	bidGuest(ev) {
+		console.log('Guest', ev.target[0].value);
+		ev.preventDefault();
+	}
+
+	render(){
+		const { competition, match } = this.props;
+		return(
+			<Col xs={6} md={6} sm={8}>
+				<MatchItem competition={competition} match={match} type="host" bid={this.bidHost} />
+				<MatchItem competition={competition} match={match} type="guest" bid={this.bidGuest} />
+				<p>{match.date}</p>
+			</Col>
+		);
+	}
+}
+
+class MatchItem extends Component{
+	constructor(props) {
+		super(props);
+		this.handleChange = this.handleChange.bind(this);
+		this.state = { bid: 0}
+	}
+
+	handleChange(stateName) {
+		return (ev) => {
+			const value = ev.target.value;
+			this.setState({
+				[stateName]: value
+			})
+		}
+	}
+
+	render() {
+		const { competition, match, type } = this.props;
+		return (
+			<FormGroup>
+				<MatchParticipant competition={competition} match={match} type={type} />
+				{match.open ?
+					<Col xs={3}>
+						<form onSubmit={this.props.bid.bind(this)}>
+							<input type="number" name="bid" value={this.state.bid} onChange={this.handleChange('bid')}/>
+						</form>
+					</Col>
+					:
+					<Col xs={3} componentClass={ControlLabel}>
+						{match.result[type]}
+					</Col>
+				}
+			</FormGroup>
+		);
+	}
+}
+
+const MatchParticipant = ({ competition, match, type }) =>
+	<Col componentClass={ControlLabel} xs={9}>
+		<img src={competition.participants[match[type]].icon}
+			alt={match[type]} />
+		{match[type]} {competition.participants[match[type]].name}
+	</Col>
 
 const authCondition = (authUser) => !!authUser;
 

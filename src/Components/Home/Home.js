@@ -10,7 +10,6 @@ class HomePage extends Component {
 		super(props);
 
 		this.handleSubmit = this.handleSubmit.bind(this);
-		this.handleChange = this.handleChange.bind(this);
 
 		this.state = {
 			groups: [],
@@ -44,15 +43,6 @@ class HomePage extends Component {
 				}
 			});
 		ev.preventDefault();
-	}
-
-	handleChange(stateName) {
-		return (ev) => {
-			const value = ev.target.value;
-			this.setState({
-				[stateName]: value
-			})
-		}
 	}
 
 	render() {
