@@ -30,9 +30,9 @@
     "build-js": "react-scripts build",
     "build": "npm-run-all build-css build-js",
     "test": "react-scripts test --env=jsdom",
-    "coverage": "npm rum test -- --coverage",
+    "coverage": "npm run test -- --coverage",
     "eject": "react-scripts eject",
-    "deploy": "firebase deploy"
+    "deploy": "firebase deploy -m \"Pipeline ${CIRCLE_BUILD_NUM} Build ${CIRCLE_TAG}\" --non-interactive --token \"${FIREBASE_TOKEN}\""
   },
   "devDependencies": {
     "check-dependencies": "^1.1.0",
