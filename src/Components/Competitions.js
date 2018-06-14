@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import withAuthorization from './withAuthorization';
 import { db } from '../Firebase';
-import { Grid, Row, Col, FormGroup,ControlLabel,FormControl,InputGroup } from 'react-bootstrap';
+import { Grid, Row, Col, FormGroup,ControlLabel,FormControl } from 'react-bootstrap';
 
 class CompetitionPage extends Component {
     constructor(props) {

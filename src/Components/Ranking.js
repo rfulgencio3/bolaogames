@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import withAuthorization from './withAuthorization';
 import { db } from '../Firebase';
 
@@ -24,7 +23,6 @@ class RankingPage extends Component {
 	}
 
 	render() {
-		const { match: { params } } = this.props;
 		const { competition, ranking } = this.state;
 		return (
 			<div>
