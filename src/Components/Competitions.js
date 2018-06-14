@@ -49,10 +49,10 @@ const MatchList = ({allMatches, competition}) =>
                         <p>
                             <img src={competition.participants[allMatches[key][groupkey].host].icon}
                                  alt={allMatches[key][groupkey].host}/>
-                            {allMatches[key][groupkey].host} {competition.participants[allMatches[key][groupkey].host].name}
-                            <input/>
+							{allMatches[key][groupkey].host} {competition.participants[allMatches[key][groupkey].host].name}
+							{allMatches[key][groupkey].open ? <input /> : <label>{allMatches[key][groupkey].result.host}</label>}
                             x
-                            <input/>
+                            {allMatches[key][groupkey].open ? <input /> : <label>{allMatches[key][groupkey].result.guest}</label>}
                             {allMatches[key][groupkey].guest} {competition.participants[allMatches[key][groupkey].guest].name}
                         </p>
                         <p>{allMatches[key][groupkey].date}</p>

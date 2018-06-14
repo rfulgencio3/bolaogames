@@ -9,6 +9,7 @@ import SignInPage from './SignIn';
 import PasswordForgetPage from './PasswordForget';
 import AccountPage from './Account';
 import GroupPage from './GroupPage';
+import RankingPage from './Ranking';
 import CompetitionPage from './Competitions';
 import * as routes from '../Constants/routes';
 import withAuthentication from './withAuthentication';
@@ -23,9 +24,11 @@ const App = () => (
                 <Route exact path={routes.SIGN_UP} component={SignUpPage}/>
                 <Route exact path={routes.SIGN_IN} component={SignInPage}/>
                 <Route exact path={routes.PASSWORD_FORGET} component={PasswordForgetPage}/>
-                <Route exact path={routes.ACCOUNT} component={AccountPage}/>
+				<Route exact path={routes.ACCOUNT} component={AccountPage} />
+
                 <Route path={routes.GROUPID} component={GroupPage}/>
-                <Route path={routes.COMPETITION} component={CompetitionPage}/>
+				<Route path={routes.COMPETITION} component={CompetitionPage} />
+				<Route exact path={routes.RANKING} component={RankingPage} />
             </main>
             <Footer/>
         </div>

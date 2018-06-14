@@ -9,7 +9,8 @@ const links = [
     { path: routes.HOME, name: 'Home', authRequired: true},
     { path: routes.ACCOUNT, name: 'Minha Conta', authRequired: true },
     { path: routes.SIGN_IN, name: 'Login', authRequired: false },
-    { path: routes.SIGN_UP, name: 'Cadastro', authRequired: false }
+	{ path: routes.SIGN_UP, name: 'Cadastro', authRequired: false },
+	{ path: routes.RANKING, name: 'Ranking', authRequired: true }
 ];
 
 export default () =>
