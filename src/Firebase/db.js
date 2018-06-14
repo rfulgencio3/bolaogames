@@ -10,6 +10,24 @@ export const doCreateUser = (id, username, email) =>
 export const onceGetUsers = () =>
 	db.ref('users').once('value');
 
+export const onceAddUserToGroup = (userid, groupid) => {
+	return db.ref(`users/${userid}`).once('value')
+		.then(snapshot => {
+			var user = snapshot.val();
+			if (user.groups)
+				user.groups[groupid] = true;
+			else
+				user.groups = { [groupid]: true };
+
+			return db.ref(`users/${userid}`)
+				.set({
+					email: user.email,
+					groups: user.groups,
+					username: user.username
+				});
+		});
+}
+
 //Group API
 export const doCreateGroup = (name, description, icon, code) => {
     const groupsRef = db.ref('groups');
@@ -21,31 +39,29 @@ export const onceGetGrupos = () =>
 	db.ref('groups').once('value');
 
 export const onceFindGroupByCode = (code) => {
-    const allGroups = db.ref('groups').once('value');
-    var _group = {};
-    allGroups.every(function (group, index) {
-        if (group.code === code) {
-            _group = group;
-            return false;
-        }
-        return true;
+	return db.ref('groups').once('value').then(groupSnapshot => {
+		const groups = groupSnapshot.val();
+        var groupToFind = null;
+		Object.keys(groups).forEach(groupkey => {
+			if (groups[groupkey].code === code) {
+				groupToFind = groups[groupkey];
+				groupToFind.key = groupkey;
+            }
+        });
+        return groupToFind;
     });
-    return _group;
 }
 
-export const onceGetMyGroups = (userid) => {
-    const myself = db.ref(`users/${userid}`).once('value');
-
-	return myself
-		.then(userSnapshot => userSnapshot.val())
-		.then(user => {
-			var myGroups = [];
-			Object.keys(user.groups).forEach(groupid => {
-				myGroups.push(db.ref(`groups/${groupid}`).once('value'));
-			});
-			return myGroups;
-		});
-}
+export const onceGetMyGroups = (userid) =>
+    db.ref(`users/${userid}`).once('value')
+        .then(userSnapshot => userSnapshot.val())
+        .then(user => {
+            var myGroups = [];
+            Object.keys(user.groups).forEach(groupid => {
+                myGroups.push(db.ref(`groups/${groupid}`).once('value'));
+            });
+            return myGroups;
+        })
 
 
 //Competition API
@@ -58,8 +74,26 @@ export const doCreateCompetition = (name, description, icon, status) => {
 export const onceGetCompetitions = () =>
     db.ref('competitions').once('value');
 
-export const onceGetMyCompetitions = (groupid) => {
+export const onceGetCompetition = (id) =>
+    db.ref(`competitions/${id}`).once('value');
 
+export const onceGetMyCompetitions = (groupid) => {
+    return db.ref(`groups/${groupid}`).once('value')
+        .then(snapshot => snapshot.val().competitions)
+        .then(competitions => {
+            var myGroups = [];
+            Object.keys(competitions).forEach(competitionid => {
+                myGroups.push(db.ref(`competitions/${competitionid}`).once('value'));
+            });
+            return myGroups;
+        })
 }
 
-//
+//Matches API
+
+export const onceGetMatches = (id) =>
+	db.ref(`matches/${id}`).once('value')
+
+//Ranking API
+export const onceGetRanking = (groupid, competitionid) =>
+	db.ref(`ranking/${groupid}/${competitionid}`).once('value')
