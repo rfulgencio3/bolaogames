@@ -22,30 +22,28 @@ export const onceGetGrupos = () =>
 
 export const onceFindGroupByCode = (code) => {
     const allGroups = db.ref('groups').once('value');
-    var _group = {};
-    allGroups.every(function (group, index) {
-        if (group.code === code) {
-            _group = group;
-            return false;
-        }
-        return true;
+    return allGroups.then(groupSnapshot => {
+        const groups = groupSnapshot.val();
+        var groupToFind = null;
+        groups.forEach(group => {
+            if (group.code === code) {
+                groupToFind = group;
+            }
+        });
+        return groupToFind;
     });
-    return _group;
 }
 
-export const onceGetMyGroups = (userid) => {
-    const myself = db.ref(`users/${userid}`).once('value');
-
-	return myself
-		.then(userSnapshot => userSnapshot.val())
-		.then(user => {
-			var myGroups = [];
-			Object.keys(user.groups).forEach(groupid => {
-				myGroups.push(db.ref(`groups/${groupid}`).once('value'));
-			});
-			return myGroups;
-		});
-}
+export const onceGetMyGroups = (userid) =>
+    db.ref(`users/${userid}`).once('value')
+        .then(userSnapshot => userSnapshot.val())
+        .then(user => {
+            var myGroups = [];
+            Object.keys(user.groups).forEach(groupid => {
+                myGroups.push(db.ref(`groups/${groupid}`).once('value'));
+            });
+            return myGroups;
+        })
 
 
 //Competition API
@@ -58,8 +56,22 @@ export const doCreateCompetition = (name, description, icon, status) => {
 export const onceGetCompetitions = () =>
     db.ref('competitions').once('value');
 
-export const onceGetMyCompetitions = (groupid) => {
+export const onceGetCompetition = (id) =>
+    db.ref(`competitions/${id}`).once('value');
 
+export const onceGetMyCompetitions = (groupid) => {
+    return db.ref(`groups/${groupid}`).once('value')
+        .then(snapshot => snapshot.val().competitions)
+        .then(competitions => {
+            var myGroups = [];
+            Object.keys(competitions).forEach(competitionid => {
+                myGroups.push(db.ref(`competitions/${competitionid}`).once('value'));
+            });
+            return myGroups;
+        })
 }
 
-//
+//Matches API
+
+export const onceGetMatches = (id) =>
+    db.ref(`matches/${id}`).once('value')
