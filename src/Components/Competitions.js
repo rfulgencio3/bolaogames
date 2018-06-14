@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import withAuthorization from './withAuthorization';
 import { db } from '../Firebase';
-import { Grid, Row, Col, FormGroup,ControlLabel,FormControl } from 'react-bootstrap';
+import { Grid, Row, Col, FormGroup, ControlLabel, FormControl } from 'react-bootstrap';
+import saveBtn from '../images/save.png';
 
 class CompetitionPage extends Component {
     constructor(props) {
@@ -82,17 +83,19 @@ const MatchList = ({allMatches, competition}) =>
 										alt={allMatches[key][groupkey].guest} />
 									{allMatches[key][groupkey].guest} {competition.participants[allMatches[key][groupkey].guest].name}
 								</Col>
+
+							</FormGroup>
+							<p>
 								{allMatches[key][groupkey].open ?
 									<Col xs={3}>
 										<FormControl type="number" />
 										<FormControl.Feedback />
+										<img src={saveBtn} alt="gravar palpite" />
 									</Col>
-									:
-									<Col xs={3} componentClass={ControlLabel}>
-										{allMatches[key][groupkey].result.guest}
-									</Col>
+									: allMatches[key][groupkey].result.guest
+
 								}
-							</FormGroup>
+							</p>
 							<p>{allMatches[key][groupkey].date}</p>
 						</Col>
 					)}
