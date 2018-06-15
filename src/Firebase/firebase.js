@@ -4,10 +4,10 @@ import 'firebase/database';
 
 const config = {
 	apiKey: process.env.REACT_APP_FIREBASE_APIKEY,
-    authDomain: "bolao-da-copa-9c243.firebaseapp.com",
-    databaseURL: "https://bolao-da-copa-9c243.firebaseio.com",
-    projectId: "bolao-da-copa-9c243",
-    storageBucket: "bolao-da-copa-9c243.appspot.com",
+	authDomain: `${process.env.REACT_APP_FIREBASE_PROJID}.firebaseapp.com`,
+	databaseURL: `https://${process.env.REACT_APP_FIREBASE_PROJID}.firebaseio.com`,
+	projectId: process.env.REACT_APP_FIREBASE_PROJID,
+	storageBucket: `${process.env.REACT_APP_FIREBASE_PROJID}.appspot.com`,
 	messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGINGSENDERID
 };
 
