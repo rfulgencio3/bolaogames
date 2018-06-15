@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import withAuthorization from './withAuthorization';
 import { db } from '../Firebase';
 import { Grid, Row, Col, FormGroup, ControlLabel, FormControl } from 'react-bootstrap';
-import saveBtn from '../images/save.png';
 
 class CompetitionPage extends Component {
     constructor(props) {
@@ -37,7 +36,8 @@ class CompetitionPage extends Component {
 			<Grid>
 				<Row className="show-grid">
 					<Col xs={8} md={8} sm={4}>
-						<h1>Copa 2018 - Deve vir do Banco</h1>
+						<h1>{competition.name}</h1>
+						<h3>{competition.description}</h3>
 					</Col>
 					<Col xs={4} md={4} sm={2}>
 						<Link to={`/ranking/${params.groupid}/${params.competitionid}`} key={params.competitionid}>
@@ -55,13 +55,17 @@ class CompetitionPage extends Component {
 const MatchList = ({ allMatches, competition, authUser, urlparams}) =>
 	<Row>
         {Object.keys(allMatches).map(key =>
-			<Col xs={6} md={6} sm={8} key={key}>
+			<Col xs={12} md={12} sm={12} key={key}>
+				<Col xs={12} md={12} sm={12} key={key}>
 				<h1>{key}</h1>
-				<Row>
+			</Col>
+			<Col xs={12} md={12} sm={12} key={key} className="table-responsive">
+					<table className="table">
                 	{Object.keys(allMatches[key]).map(groupkey =>
 						<SingleMatch competition={competition} match={allMatches[key][groupkey]} authUser={authUser} matchid={groupkey} urlparams={urlparams} />
 					)}
-				</Row>
+				</table>
+				</Col>
 			</Col>
         )}
 	</Row>
@@ -77,7 +81,7 @@ class SingleMatch extends Component {
 		this.state = { host:0,guest:0,points:0 }
 	}
 
-	change(ev){		
+	change(ev){
 		const { urlparams, matchid, authUser: { uid } } = this.props;
 		var oldstate = this.state;
 		oldstate[ev.target.name]= parseInt(ev.target.value,10);
@@ -96,7 +100,7 @@ class SingleMatch extends Component {
 			.then(() => { });
 	}
 
-	bidGuest(ev) {		
+	bidGuest(ev) {
 		const { urlparams, matchid, authUser: { uid } } = this.props;
 		var oldstate = this.state;
 		oldstate[ev.target[0].name] = parseInt(ev.target[0].value, 10);
@@ -121,11 +125,11 @@ class SingleMatch extends Component {
 	render(){
 		const { competition, match } = this.props;
 		return(
-			<Col xs={6} md={6} sm={8}>
+			<tr>
 				<MatchItem competition={competition} match={match} type="host" bid={this.bidHost} formValue={this.state.host} changevalue={this.change} />
 				<MatchItem competition={competition} match={match} type="guest" bid={this.bidGuest} formValue={this.state.guest} changevalue={this.change} />
-				<p>{match.date}</p>
-			</Col>
+				<td>{match.date}</td>
+			</tr>
 		);
 	}
 }
@@ -149,7 +153,7 @@ class MatchItem extends Component{
 	render() {
 		const { competition, match, type,formValue } = this.props;
 		return (
-			<FormGroup>
+			<td>
 				<MatchParticipant competition={competition} match={match} type={type} />
 				{match.open ?
 					<Col xs={3}>
@@ -162,17 +166,16 @@ class MatchItem extends Component{
 						{match.result[type]}
 					</Col>
 				}
-			</FormGroup>
+			</td>
 		);
 	}
 }
 
 const MatchParticipant = ({ competition, match, type }) =>
-	<Col componentClass={ControlLabel} xs={9}>
-		<img src={competition.participants[match[type]].icon}
-			alt={match[type]} />
+	<span>
+		<img src={competition.participants[match[type]].icon} alt={match[type]} />
 		{match[type]} {competition.participants[match[type]].name}
-	</Col>
+	</span>
 
 const authCondition = (authUser) => !!authUser;
 
