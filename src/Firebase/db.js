@@ -4,7 +4,7 @@ import {db} from './firebase';
 export const doCreateUser = (id, username, email) =>
 	db.ref(`users/${id}`).set({
 		username,
-		email,
+		email
 	});
 
 export const onceGetUsers = () =>
@@ -56,10 +56,12 @@ export const onceGetMyGroups = (userid) =>
     db.ref(`users/${userid}`).once('value')
         .then(userSnapshot => userSnapshot.val())
         .then(user => {
-            var myGroups = [];
-            Object.keys(user.groups).forEach(groupid => {
-                myGroups.push(db.ref(`groups/${groupid}`).once('value'));
-            });
+			var myGroups = [];
+			if (user.groups) {
+				Object.keys(user.groups).forEach(groupid => {
+					myGroups.push(db.ref(`groups/${groupid}`).once('value'));
+				});
+			}
             return myGroups;
         })
 
@@ -104,4 +106,3 @@ export const onceGetBid = (groupid,competitionid,matchid,userid) =>
 
 export const onceDoBid = (groupid, competitionid, matchid, userid,host,guest) =>
 	db.ref(`bids/${groupid}/${competitionid}/${matchid}/${userid}`).set({host,guest});
-	

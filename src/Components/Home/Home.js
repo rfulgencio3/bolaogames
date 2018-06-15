@@ -34,10 +34,20 @@ class HomePage extends Component {
 		db.onceFindGroupByCode(ev.target[0].value)
 			.then(grupoCode => {
 				if (grupoCode) {
-					db.onceAddUserToGroup(this.props.authUser.uid, grupoCode.key)
-						.then(() => {
-							this.setState((prev) => ({ groups: [...prev.groups, grupoCode] }));
-						});
+
+					var contains = false;
+					this.state.groups.forEach(group => {
+						if (group.code === grupoCode.code)
+							contains = true;
+					});
+					if (!contains) {
+						db.onceAddUserToGroup(this.props.authUser.uid, grupoCode.key)
+							.then(() => {
+								this.setState((prev) => ({ groups: [...prev.groups, grupoCode] }));
+							});
+					} else {
+						alert('Você já está nesse grupo');
+					}
 				} else {
 					alert('No Result Found');
 				}
