@@ -92,8 +92,16 @@ export const onceGetMyCompetitions = (groupid) => {
 //Matches API
 
 export const onceGetMatches = (id) =>
-	db.ref(`matches/${id}`).once('value')
+	db.ref(`matches/${id}`).once('value');
 
 //Ranking API
 export const onceGetRanking = (groupid, competitionid) =>
-	db.ref(`ranking/${groupid}/${competitionid}`).once('value')
+	db.ref(`ranking/${groupid}/${competitionid}`).once('value');
+
+//Bid API
+export const onceGetBid = (groupid,competitionid,matchid,userid) =>
+	db.ref(`bids/${groupid}/${competitionid}/${matchid}/${userid}`).once('value');
+
+export const onceDoBid = (groupid, competitionid, matchid, userid,host,guest) =>
+	db.ref(`bids/${groupid}/${competitionid}/${matchid}/${userid}`).set({host,guest});
+	
