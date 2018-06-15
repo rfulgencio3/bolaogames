@@ -113,11 +113,10 @@ class SignUpForm extends Component {
 }
 
 const SignUpLink = () =>
-    <p>
-        Don't have an account?
-        {' '}
-        <Link to={routes.SIGN_UP}>Sign Up</Link>
-    </p>
+    <div>
+        <p>Esqueceu sua senha? <Link to="/pw-forget">Clique aqui para recuperar</Link></p>
+        <p>Não tem uma conta? <Link to={routes.SIGN_UP}>Cadastre-se</Link></p>
+    </div>
 
 export default withRouter(SignUpPage);
 

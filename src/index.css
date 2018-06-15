@@ -22,3 +22,9 @@ footer li {
     color: #d2d2d2;
     display: inline-block;
     margin-left: 5px; }
+
+.mb20 {
+  margin-bottom: 20px; }
+
+.pb50 {
+  padding-bottom: 50px; }
