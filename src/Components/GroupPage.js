@@ -47,7 +47,7 @@ class GroupPage extends Component {
 const CompetitionList = ({competitions, group}) =>
 	<Row>
 		{Object.keys(competitions).map(key =>
-			<Col xs={4} md={4} sm={2}>
+			<Col xs={4} md={4} sm={2} key={key}>
             <Link to={`/competition/${group}/${competitions[key].uid}`} key={key}>
                 <div key={key}>
                     <img src={competitions[key].icon} alt={competitions[key].name}/>
