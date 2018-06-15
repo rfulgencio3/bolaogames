@@ -3,7 +3,7 @@ import {
     Link,
     withRouter,
 } from 'react-router-dom';
-import { auth } from '../Firebase';
+import { auth,db } from '../Firebase';
 import * as routes from '../Constants/routes';
 
 const SignUpPage = ({ history }) =>
@@ -31,7 +31,8 @@ class SignUpForm extends Component {
     }
 
     onSubmit = (event) => {
-        const {
+		const {
+			username,
             email,
             passwordOne,
         } = this.state;
@@ -42,8 +43,15 @@ class SignUpForm extends Component {
 
         auth.doCreateUserWithEmailAndPassword(email, passwordOne)
             .then(authUser => {
-                this.setState(() => ({ ...INITIAL_STATE }));
-                history.push(routes.HOME);
+				db.doCreateUser(authUser.user.uid, username, email)
+					.then(() => {
+						this.setState(() => ({ ...INITIAL_STATE }));
+						history.push(routes.HOME);
+					})
+					.catch(error => {
+						this.setState(byPropKey('error', error));
+					});
+
             })
             .catch(error => {
                 this.setState(byPropKey('error', error));

@@ -4,11 +4,29 @@ import {db} from './firebase';
 export const doCreateUser = (id, username, email) =>
 	db.ref(`users/${id}`).set({
 		username,
-		email,
+		email
 	});
 
 export const onceGetUsers = () =>
 	db.ref('users').once('value');
+
+export const onceAddUserToGroup = (userid, groupid) => {
+	return db.ref(`users/${userid}`).once('value')
+		.then(snapshot => {
+			var user = snapshot.val();
+			if (user.groups)
+				user.groups[groupid] = true;
+			else
+				user.groups = { [groupid]: true };
+
+			return db.ref(`users/${userid}`)
+				.set({
+					email: user.email,
+					groups: user.groups,
+					username: user.username
+				});
+		});
+}
 
 //Group API
 export const doCreateGroup = (name, description, icon, code) => {
@@ -21,13 +39,13 @@ export const onceGetGrupos = () =>
 	db.ref('groups').once('value');
 
 export const onceFindGroupByCode = (code) => {
-    const allGroups = db.ref('groups').once('value');
-    return allGroups.then(groupSnapshot => {
-        const groups = groupSnapshot.val();
+	return db.ref('groups').once('value').then(groupSnapshot => {
+		const groups = groupSnapshot.val();
         var groupToFind = null;
-        groups.forEach(group => {
-            if (group.code === code) {
-                groupToFind = group;
+		Object.keys(groups).forEach(groupkey => {
+			if (groups[groupkey].code === code) {
+				groupToFind = groups[groupkey];
+				groupToFind.key = groupkey;
             }
         });
         return groupToFind;
@@ -38,10 +56,12 @@ export const onceGetMyGroups = (userid) =>
     db.ref(`users/${userid}`).once('value')
         .then(userSnapshot => userSnapshot.val())
         .then(user => {
-            var myGroups = [];
-            Object.keys(user.groups).forEach(groupid => {
-                myGroups.push(db.ref(`groups/${groupid}`).once('value'));
-            });
+			var myGroups = [];
+			if (user.groups) {
+				Object.keys(user.groups).forEach(groupid => {
+					myGroups.push(db.ref(`groups/${groupid}`).once('value'));
+				});
+			}
             return myGroups;
         })
 
@@ -74,8 +94,15 @@ export const onceGetMyCompetitions = (groupid) => {
 //Matches API
 
 export const onceGetMatches = (id) =>
-	db.ref(`matches/${id}`).once('value')
+	db.ref(`matches/${id}`).once('value');
 
 //Ranking API
 export const onceGetRanking = (groupid, competitionid) =>
-	db.ref(`ranking/${groupid}/${competitionid}`).once('value')
+	db.ref(`ranking/${groupid}/${competitionid}`).once('value');
+
+//Bid API
+export const onceGetBid = (groupid,competitionid,matchid,userid) =>
+	db.ref(`bids/${groupid}/${competitionid}/${matchid}/${userid}`).once('value');
+
+export const onceDoBid = (groupid, competitionid, matchid, userid,host,guest) =>
+	db.ref(`bids/${groupid}/${competitionid}/${matchid}/${userid}`).set({host,guest});
