@@ -45,25 +45,40 @@ class PasswordChangeForm extends Component {
             passwordOne === '';
 
         return (
-            <form onSubmit={this.onSubmit}>
-                <input
-                    value={passwordOne}
-                    onChange={event => this.setState(byPropKey('passwordOne', event.target.value))}
-                    type="password"
-                    placeholder="New Password"
-                />
-                <input
-                    value={passwordTwo}
-                    onChange={event => this.setState(byPropKey('passwordTwo', event.target.value))}
-                    type="password"
-                    placeholder="Confirm New Password"
-                />
-                <button disabled={isInvalid} type="submit">
-                    Reset My Password
-                </button>
-
-                { error && <p>{error.message}</p> }
-            </form>
+            <div className="row">
+                <div className="col-md-6 col-sm-12">
+                    <form onSubmit={this.onSubmit}>
+                        <div class="form-group">
+                            <label htmlFor="newPassword">Nova senha</label>
+                            <input
+                                value={passwordOne}
+                                onChange={event => this.setState(byPropKey('passwordOne', event.target.value))}
+                                type="password"
+                                placeholder="Nova senha"
+                                className="form-control"
+                                id="newPassword"
+                            />
+                        </div>
+                        <div class="form-group">
+                        <label htmlFor="newPasswordConfirmation">Confirmar nova senha</label>
+                            <input
+                                value={passwordTwo}
+                                onChange={event => this.setState(byPropKey('passwordTwo', event.target.value))}
+                                type="password"
+                                placeholder="Confirmar nova senha"
+                                className="form-control"
+                                id="newPasswordConfirmation"
+                            />
+                        </div>
+                        <button type="submit" class="btn btn-primary" disabled={isInvalid}>
+                            Alterar senha
+                        </button>
+                        <div className={`${error ? null : 'd-none'} alert alert-danger`}>
+                            { error ? error.message : null }
+                        </div>
+                    </form>
+                </div>
+            </div>
         );
     }
 }

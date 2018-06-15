@@ -8,9 +8,8 @@ import * as routes from '../Constants/routes';
 
 const SignInPage = ({ history }) =>
     <div>
-        <h1>SignIn</h1>
+        <h1>Login</h1>
         <SignInForm history={history} />
-        <PasswordForgetLink />
         <SignUpLink />
     </div>
 
@@ -66,23 +65,28 @@ class SignInForm extends Component {
 
         return (
             <form onSubmit={this.onSubmit}>
-                <input
-                    value={email}
-                    onChange={event => this.setState(byPropKey('email', event.target.value))}
-                    type="text"
-                    placeholder="Email Address"
-                />
-                <input
-                    value={password}
-                    onChange={event => this.setState(byPropKey('password', event.target.value))}
-                    type="password"
-                    placeholder="Password"
-                />
-                <button disabled={isInvalid} type="submit">
-                    Sign In
-                </button>
-
-                { error && <p>{error.message}</p> }
+                <div className="form-group">
+                    <input
+                        value={email}
+                        onChange={event => this.setState(byPropKey('email', event.target.value))}
+                        type="text"
+                        placeholder="Email Address"
+                        className="form-control"
+                    />
+                </div>
+                <div className="form-group">
+                    <input
+                        value={password}
+                        onChange={event => this.setState(byPropKey('password', event.target.value))}
+                        type="password"
+                        placeholder="Senha"
+                        className="form-control"
+                    />
+                </div>
+                <button className="btn btn-primary mb20" disabled={isInvalid} type="submit">Entrar</button>
+                <div className={`${error ? null : 'd-none'} alert alert-danger`}>
+                    { error ? error.message : null }
+                </div>
             </form>
         );
     }

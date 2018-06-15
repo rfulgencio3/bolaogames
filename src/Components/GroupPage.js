@@ -22,7 +22,6 @@ class GroupPage extends Component {
                         var competition = aSnap.val();
                         competition.uid = aSnap.key;
                         this.setState((prev) => ({competitions: [...prev.competitions, competition]}));
-                        console.log(this.state.competitions);
                     });
                 });
             });

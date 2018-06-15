@@ -48,31 +48,34 @@ class PasswordForgetForm extends Component {
         const isInvalid = email === '';
 
         return (
-            <form onSubmit={this.onSubmit}>
-                <input
-                    value={this.state.email}
-                    onChange={event => this.setState(byPropKey('email', event.target.value))}
-                    type="text"
-                    placeholder="Email Address"
-                />
-                <button disabled={isInvalid} type="submit">
-                    Reset My Password
-                </button>
-
-                { error && <p>{error.message}</p> }
-            </form>
+            <div className="row">
+                <div className="col-md-8 col-sm-12">
+                    <form onSubmit={this.onSubmit} className="form-inline">
+                        <div className="form-group mb-2">
+                            <label htmlFor="emailField"></label>
+                            <input
+                                value={this.state.email}
+                                onChange={event => this.setState(byPropKey('email', event.target.value))}
+                                type="text"
+                                placeholder="Email Address"
+                                class="form-control"
+                                id="emailField"
+                            />
+                        </div>
+                        <button class="btn btn-primary mx-sm-3 mb-2" disabled={isInvalid} type="submit">
+                            Resetar minha senha
+                        </button>
+                        <div className={`${error ? null : 'd-none'} alert alert-danger`}>
+                            { error ? error.message : null }
+                        </div>
+                    </form>
+                </div>
+            </div>
         );
     }
 }
-
-const PasswordForgetLink = () =>
-    <p>
-        <Link to="/pw-forget">Forgot Password?</Link>
-    </p>
+    
 
 export default PasswordForgetPage;
 
-export {
-    PasswordForgetForm,
-    PasswordForgetLink,
-};
+export { PasswordForgetForm };
